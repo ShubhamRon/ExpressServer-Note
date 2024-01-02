@@ -6,7 +6,7 @@ const CreateNote = async (req, res) => {
         const { ID } = req.user
         const { title, description } = req.body;
         const Task_Notes = await Schema.create({ title, description, ownerID: ID })
-        res.status(200).json({ status: "Sucessful", message: Task_Notes })
+        res.status(201).json({ status: "Sucessful", Task_Notes })
     } catch (err) {
         res.status(500).json({ message: err.message })
     }
@@ -14,16 +14,21 @@ const CreateNote = async (req, res) => {
 
 const GetNote = async (req, res) => {
     try {
+        const { id } = req.query;
         const { ID } = req.user
-        const { id } = req.headers;
         if (!id) {
             const Task_Notes = await Schema.find({ ownerID: ID }).select(['-__v']);
             res.status(200).json({ status: 'Successful', Task_Notes })
             return;
         }
-        const Task_Notes = await Schema.findOne({ _id: id });
-        res.status(200).json({ status: 'Successful', Task_Notes })
+        try {
+            const Task_Notes = await Schema.findOne({ _id: id });
+            res.status(200).json({ status: 'Successful', Task_Notes })
+        } catch (err) {
+            res.status(404).json({ status: 'Not Found!', message: "No Task Found for given ID" })
+        }
     } catch (err) {
+        console.log(err.message)
         res.status(500).json({ status: 'Something Went Wrong' })
 
     }
@@ -48,7 +53,7 @@ const UpdateNote = async (req, res) => {
 const DeleteNote = async (req, res) => {
     try {
         const { ID } = req.user
-        const { id } = req.headers;
+        const { id } = req.params;
         const Task_Notes = await Schema.findByIdAndDelete({ _id: id, ownerID: ID });
         if (Task_Notes) {
             res.status(200).json({ status: `Successfully Deleted` })
