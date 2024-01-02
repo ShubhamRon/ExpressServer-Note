@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 
+// This is Note Schema
 const Note_Taking_API = Schema({
     ownerID: {
         type: "String",

@@ -13,6 +13,7 @@ const CreateNote = async (req, res) => {
     }
 }
 
+// This will fetch all the Note from the database and a single note provided NID (Note ID) as a query parameter.
 const GetNote = async (req, res) => {
     try {
         const { NID } = req.query;
@@ -55,6 +56,7 @@ const UpdateNote = async (req, res) => {
     }
 }
 
+// This will delete Note provided NID (Note ID) as a path parameter.
 const DeleteNote = async (req, res) => {
     try {
         const { ID } = req.user

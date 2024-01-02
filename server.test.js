@@ -1,6 +1,7 @@
 const request = require('supertest');
 
 
+// This will generate JWT token each time user sign in.
 const SignIn = { username: "JEST", password: "JEST" }
 describe('POST /sign_in', () => {
   test('User Sign-In', async () => {
@@ -11,12 +12,12 @@ describe('POST /sign_in', () => {
   });
 });
 
-// Sample test tasks
+// Sample Note
 const createtask = { description: "This is from JEST for Testing Purpose Only", title: 'Testing With JEST' }
 const TOKEN = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjY1OTMyODQ3OWFhZGE2NjA1Y2FhNWFhZiIsInVzZXJuYW1lIjoiMTIzNDUiLCJpYXQiOjE3MDQxODAwMzksImV4cCI6MTcwNDYxMjAzOX0.N3j47BIhGZTSR9kYPDU6oOTaSMeH_ANn0hx8DXsd8EE`
 
 
-// // Test the POST /task route
+// // Test the POST /createnote route
 
 describe('POST /createnote', () => {
   test('should add a new task', async () => {

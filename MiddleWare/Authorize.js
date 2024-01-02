@@ -2,14 +2,16 @@ const JWT = require("jsonwebtoken");
 require('dotenv').config();
 
 
-const User_Authentication = async (req, res, next) => {
-    const { token } = req.headers;
+// This will Authorize each request with Unique JWT Token
+const User_Authorization = async (req, res, next) => {
+    const { authorization } = req.headers;
     try {
-        if(!token || !token.startsWith("Bearer")){
+        if(!authorization || !authorization.startsWith("Bearer")){
             res.status(401).json({ status:"Not Acceptable", message: "Invalid Token" })
             return;
         }
-        const TOKEN =token.split(' ')[1];
+        const TOKEN =authorization.split(' ')[1];
+        // Verify User TOKEN
         const Payload = JWT.verify(TOKEN, process.env.JWT_SECRET_KEY)
         req.user = { ID: Payload.ID, username: Payload.username };
         res.set('ExpiresIn', `${req.user.exp}`)
@@ -19,4 +21,4 @@ const User_Authentication = async (req, res, next) => {
     }
 }
 
-module.exports = User_Authentication; 
+module.exports = User_Authorization; 

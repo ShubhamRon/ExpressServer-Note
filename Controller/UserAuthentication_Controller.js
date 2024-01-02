@@ -1,7 +1,8 @@
 const UserandPassword = require("../Schema/Username_Password")
 
+// These functions will handlea User Authentication.
 
-
+// This will register the user with unique username and password
 const CreateUserPassword = async (req, res) => { 
     const { username, password } = req.body;
     try {
@@ -18,13 +19,16 @@ const CreateUserPassword = async (req, res) => {
 }
 
 // Check UserId and Password
+// This will generate User JWT token that will be used for authenticating each Note request.
 const Check_UserId_Password = async (req, res) => {
     const { username, password } = req.body;
     try {
         const User = await UserandPassword.findOne({ username })
         if (User) {
+            // Match the user password with saved database
             const IsPasswordMatch = await User.comparepasswords(password);
             if (IsPasswordMatch) {
+                // This Will generate Unique JWT Token for the User
                 const JWTToken = User.createJWT(password);
                 res.status(200).json({ status: "Successful", message: "You've successfully Signed In!", TOKEN: JWTToken })
                 return;
