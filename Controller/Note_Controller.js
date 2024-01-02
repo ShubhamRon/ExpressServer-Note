@@ -37,8 +37,9 @@ const GetNote = async (req, res) => {
 const UpdateNote = async (req, res) => {
     try {
         const { ID } = req.user;
-        const { title, description, TID } = req.body;
-        const Task_Notes = await Schema.findByIdAndUpdate({ _id: TID, ownerID: ID }, { title, description }, { runValidators: true, new: true }).select(['-__v'])
+        const { tid } = req.query;
+        const { title, description } = req.body;
+        const Task_Notes = await Schema.findByIdAndUpdate({ _id: tid, ownerID: ID }, { title, description }, { runValidators: true, new: true }).select(['-__v'])
         if (Task_Notes) {
             res.status(200).json({ status: "Successfully Updated", Updated_Task_Notes: Task_Notes });
             return;
@@ -46,6 +47,7 @@ const UpdateNote = async (req, res) => {
         res.status(404).json({ status: "Requested ID Not Found", message: "No Note Exist for given ID" });
 
     } catch (err) {
+        console.log(err.message)
         res.status(500).json({ message: "No Task Found for Given ID" })
     }
 }

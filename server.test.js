@@ -3,6 +3,8 @@ const request = require('supertest');
 // Sample test tasks
 const createtask = { description: "This is from JEST for Testing Purpose Only", title: 'Testing With JEST' }
 const TOKEN = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjY1OTMyODQ3OWFhZGE2NjA1Y2FhNWFhZiIsInVzZXJuYW1lIjoiMTIzNDUiLCJpYXQiOjE3MDQxNzYxODcsImV4cCI6MTcwNDYwODE4N30.XS2dPaR8s1as-t0z4r06hk8XlW2r68Rqmpou44tQpaU"
+
+
 // // Test the POST /task route
 
 describe('POST /createnote', () => {
@@ -47,22 +49,19 @@ describe('GET /getnote', () => {
 
 });
 
-
-// Test the PATCH /task route
-// describe('PATCH /task', () => {
-//   test('should update a task', async () => {
-//     const task = { taskname: "vaibhavyadavtesting", description: "This is Updated", status: "Completed" }
-//     const response = await request('http://localhost:5000').patch(`/task?taskname=vaibhavyadavtesting`).send(task)
-//     expect(response.status).toBe(200);
-//     expect(response.body.task).toHaveProperty('taskname');
-//     expect(response.body.task.status).toBe("Completed");
-//   });
-
-//   test('should return null if taskname is not found', async () => {
-//     const response = await request('http://localhost:5000').patch(`/task?taskname=vaibhavyadavtesting-notfound`);
-//     expect(response.body.task).toBe(null);
-//   });
-// });
+// Test the PATCH /updatenote
+const updatetask = { description: "This is to update, JEST for Testing Purpose Only", title: 'Successfully Updated, Testing With JEST' }
+describe('PATCH /updatenote', () => {
+  test('should update a task', async () => {
+    const response = await request('http://localhost:5000/api').patch(`/updatenote?tid=6593a70442ebabcf56e6e39c`).send(updatetask).set({ "token": TOKEN })
+    expect(response.status).toBe(200);
+    expect(response.body.Updated_Task_Notes).toHaveProperty('title');
+    expect(response.body.Updated_Task_Notes).toHaveProperty('Created_at');
+    expect(response.body.Updated_Task_Notes).toHaveProperty('description');
+    expect(response.body.Updated_Task_Notes).toHaveProperty('Updated_at');
+    expect(response.body.status).toBe("Successfully Updated");
+  });
+});
 
 // Test the DELETE /deletenote/:id route
 describe('DELETE /deletenote', () => {
@@ -72,3 +71,4 @@ describe('DELETE /deletenote', () => {
     expect(response.status).toBe(200);
   });
 });
+

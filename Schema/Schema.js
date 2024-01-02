@@ -10,13 +10,13 @@ const Note_Taking_API = Schema({
     title: {
         type: "String",
         required: [true, "Title is Missing"],
-        maxlength: 30,
+        maxlength: 70,
         minlength: 3
     },
     description: {
         type: "String",
         required: [true, "Description is Missing"],
-        maxlength: 100,
+        maxlength: 300,
         minlength: 3
     }
 }, {
