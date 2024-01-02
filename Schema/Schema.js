@@ -21,7 +21,7 @@ const Note_Taking_API = Schema({
     }
 }, {
     timestamps: {
-        createdAt: 'Created_at', // Use `created_at` to store the created date
+        createdAt: 'Created_at', // Use `Created_at` to store the created date
         updatedAt: 'Updated_at'
     }
 });

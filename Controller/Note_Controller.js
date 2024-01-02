@@ -1,6 +1,7 @@
 const Schema = require("../Schema/Schema")
 
 // Post Note-Given Here
+// This Function Will Create Note
 const CreateNote = async (req, res) => {
     try {
         const { ID } = req.user
@@ -14,15 +15,15 @@ const CreateNote = async (req, res) => {
 
 const GetNote = async (req, res) => {
     try {
-        const { id } = req.query;
+        const { NID } = req.query;
         const { ID } = req.user
-        if (!id) {
+        if (!NID) {
             const Task_Notes = await Schema.find({ ownerID: ID }).select(['-__v']);
             res.status(200).json({ status: 'Successful', Task_Notes })
             return;
         }
         try {
-            const Task_Notes = await Schema.findOne({ _id: id });
+            const Task_Notes = await Schema.findOne({ _id: NID });
             res.status(200).json({ status: 'Successful', Task_Notes })
         } catch (err) {
             res.status(404).json({ status: 'Not Found!', message: "No Task Found for given ID" })
@@ -34,12 +35,14 @@ const GetNote = async (req, res) => {
     }
 }
 
+
+// Updation Field Goes Here....
 const UpdateNote = async (req, res) => {
     try {
         const { ID } = req.user;
-        const { tid } = req.query;
+        const { NID } = req.query;
         const { title, description } = req.body;
-        const Task_Notes = await Schema.findByIdAndUpdate({ _id: tid, ownerID: ID }, { title, description }, { runValidators: true, new: true }).select(['-__v'])
+        const Task_Notes = await Schema.findByIdAndUpdate({ _id: NID, ownerID: ID }, { title, description }, { runValidators: true, new: true }).select(['-__v'])
         if (Task_Notes) {
             res.status(200).json({ status: "Successfully Updated", Updated_Task_Notes: Task_Notes });
             return;
@@ -55,13 +58,13 @@ const UpdateNote = async (req, res) => {
 const DeleteNote = async (req, res) => {
     try {
         const { ID } = req.user
-        const { id } = req.params;
-        const Task_Notes = await Schema.findByIdAndDelete({ _id: id, ownerID: ID });
+        const { NID } = req.params;
+        const Task_Notes = await Schema.findByIdAndDelete({ _id: NID, ownerID: ID });
         if (Task_Notes) {
             res.status(200).json({ status: `Successfully Deleted` })
             return;
         }
-        res.status(200).json({ message: `${id} Already Deleted` })
+        res.status(404).json({ message: `${NID} Already Deleted` })
     } catch (err) {
         res.status(500).json({ message: err.message })
     }
