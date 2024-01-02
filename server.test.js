@@ -1,8 +1,19 @@
 const request = require('supertest');
 
+
+const SignIn = { username: "JEST", password: "JEST" }
+describe('POST /sign_in', () => {
+  test('User Sign-In', async () => {
+    const response = await request('http://localhost:5000/auth').post(`/sign_in`).send(SignIn);
+    expect(response.body.message).toBe("You've successfully Signed In!");
+    expect(response.body.status).toBe('Successful');
+    expect(response.status).toBe(200);
+  });
+});
+
 // Sample test tasks
 const createtask = { description: "This is from JEST for Testing Purpose Only", title: 'Testing With JEST' }
-const TOKEN = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjY1OTMyODQ3OWFhZGE2NjA1Y2FhNWFhZiIsInVzZXJuYW1lIjoiMTIzNDUiLCJpYXQiOjE3MDQxNzYxODcsImV4cCI6MTcwNDYwODE4N30.XS2dPaR8s1as-t0z4r06hk8XlW2r68Rqmpou44tQpaU"
+const TOKEN = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjY1OTMyODQ3OWFhZGE2NjA1Y2FhNWFhZiIsInVzZXJuYW1lIjoiMTIzNDUiLCJpYXQiOjE3MDQxODAwMzksImV4cCI6MTcwNDYxMjAzOX0.N3j47BIhGZTSR9kYPDU6oOTaSMeH_ANn0hx8DXsd8EE`
 
 
 // // Test the POST /task route
@@ -30,7 +41,7 @@ describe('GET /getnote', () => {
     expect(response.body.Task_Notes[0]).toHaveProperty('description');
     expect(response.body.status).toBe("Successful");
   });
-    
+
   test('Should return a Note', async () => {
     const response = await request('http://localhost:5000/api').get(`/getnote?id=6593a70442ebabcf56e6e39c`).set({ "token": TOKEN })
     expect(response.status).toBe(200);
@@ -39,7 +50,7 @@ describe('GET /getnote', () => {
     expect(response.body.Task_Notes).toHaveProperty('description');
     expect(response.body.status).toBe("Successful");
   });
-  
+
   test('Should return Not Found', async () => {
     const response = await request('http://localhost:5000/api').get(`/getnote?id=WrongTaskID`).set({ "token": TOKEN })
     expect(response.status).toBe(404);
