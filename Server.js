@@ -4,6 +4,8 @@ const cors = require('cors');
 app.use(cors());
 require('dotenv').config();
 app.use(express.json());
+// Bring the service file here and apply the changes
+require('./Services/ChangeModule')
 
 const authrouter = require('./Router/AuthRouter');
 app.use('/auth', authrouter);
@@ -16,7 +18,7 @@ const AuthMiddleware = require('./MiddleWare/Authorize')
 app.use('/api', AuthMiddleware, router);
 
 
-
+ 
 
 const PORT = process.env.PORT || 5000;
 const { ConnectDB } = require("./ConnecttoMongoDB/Connection")
