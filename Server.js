@@ -5,7 +5,8 @@ app.use(cors());
 require('dotenv').config();
 app.use(express.json());
 // Bring the service file here and apply the changes
-require('./Services/ChangeModule')
+require('./Services/cache')
+
 
 const authrouter = require('./Router/AuthRouter');
 app.use('/auth', authrouter);

@@ -1,5 +1,7 @@
 const Schema = require("../Schema/Schema")
 
+//  .cache means to use cache of redis on that particular query
+
 // Post Note-Given Here
 // This Function Will Create Note
 const CreateNote = async (req, res) => {
@@ -7,7 +9,7 @@ const CreateNote = async (req, res) => {
         const { ID } = req.user
         const { title, description } = req.body;
         const Task_Notes = await Schema.create({ title, description, ownerID: ID })
-        res.status(201).json({ status: "Sucessful", Task_Notes })
+        res.status(201).json({ status: "Successful", Task_Notes })
     } catch (err) {
         res.status(500).json({ message: err.message })
     }
@@ -17,16 +19,17 @@ const CreateNote = async (req, res) => {
 const GetNote = async (req, res) => {
     try {
         const { NID } = req.query;
-        const { ID } = req.user
+        const { ID } = req.user;
         if (!NID) {
             // Find and return all the requested Note 
-            const Task_Notes = await Schema.find({ ownerID: ID }).select(['-__v']);
+            const Task_Notes = await Schema.find({ ownerID: ID }).select(['-__v']).cache({ key: ID });
             res.status(200).json({ status: 'Successful', Task_Notes })
             return;
         }
+
         try {
             // Find the specific Note with provided NID (Note ID)
-            const Task_Notes = await Schema.findOne({ _id: NID });
+            const Task_Notes = await Schema.findOne({ _id: NID }).cache();
             res.status(200).json({ status: 'Successful', Task_Notes })
         } catch (err) {
             res.status(404).json({ status: 'Not Found!', message: "No Task Found for given NID" })
@@ -52,7 +55,6 @@ const UpdateNote = async (req, res) => {
             return;
         }
         res.status(404).json({ status: "Requested ID Not Found", message: "No Note Exist for given NID" });
-
     } catch (err) {
         console.log(err.message)
         res.status(500).json({ message: "No Task Found for Given ID" })
