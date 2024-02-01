@@ -1,3 +1,6 @@
+// Import Keys
+const keys = require("./config/keys")
+
 const express = require("express");
 const app = express()
 const cors = require('cors');
@@ -5,7 +8,7 @@ app.use(cors());
 require('dotenv').config();
 app.use(express.json());
 // Bring the service file here and apply the changes
-require('./Services/cache')
+require('./Services/cache');
 
 
 const authrouter = require('./Router/AuthRouter');
@@ -21,11 +24,11 @@ app.use('/api', AuthMiddleware, router);
 
  
 
-const PORT = process.env.PORT || 5000;
+const PORT = keys.PORT;
 const { ConnectDB } = require("./ConnecttoMongoDB/Connection")
 const StartServer = async () => {
     try {
-        await ConnectDB(process.env.MONGOURL)
+        await ConnectDB(keys.MONGOURL)
         app.listen(PORT, console.log(`Server is Listening on PORT...... ${PORT}`))
     } catch (err) {
         console.log(err.message);

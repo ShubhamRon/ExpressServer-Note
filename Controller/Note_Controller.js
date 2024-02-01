@@ -22,6 +22,8 @@ const GetNote = async (req, res) => {
         const { ID } = req.user;
         if (!NID) {
             // Find and return all the requested Note 
+            // Here .cache is for redis server for faster accessing the our Note
+            // -----> NOTE that All the Note will expire in every 10 Seconds. :) 
             const Task_Notes = await Schema.find({ ownerID: ID }).select(['-__v']).cache({ key: ID });
             res.status(200).json({ status: 'Successful', Task_Notes })
             return;

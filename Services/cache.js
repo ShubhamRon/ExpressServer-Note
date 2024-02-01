@@ -4,6 +4,8 @@ const { createClient } = require('redis');
 const util = require('util');
 const client = createClient();
 client.on('error', err => console.log('Redis Client Error', err));
+
+// Redis connect to localhost, Change if required !
 (async function () {
     await client.connect();
     console.log("CONNECTED TO REDIS");
